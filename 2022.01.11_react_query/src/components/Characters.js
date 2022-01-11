@@ -1,24 +1,44 @@
 import React from 'react'
 import { useQuery } from 'react-query'
+import Character from './Character'
 
 const Characters = () => {
-  const [characters, setCharacters] = React.useState([])
-
-  const {} = useQuery('characters', fetchCharacters)
-
-  const fetchCharacters = async () => {
-    const response = await fetch('https://rickandmortyapi.com/api/character')
-    const data = await response.json()
-    setCharacters(data.results)
+  const [page, setPage] = React.useState(1)
+  const fetchCharacters = async ({ queryKey }) => {
+    const response = await fetch(
+      `https://rickandmortyapi.com/api/character?page=${queryKey[1]}`
+    )
+    return response.json()
   }
-  React.useEffect(() => {
-    fetchCharacters()
-  }, [])
+  const { data, status, isPreviousData, isLoading, isError } = useQuery(
+    ['characters', page],
+    fetchCharacters,
+    {
+      keepPreviousData: true,
+    }
+  )
+
+  if (isLoading) return <div>Loading...</div>
+  if (isError) return <div>Error</div>
   return (
-    <div>
-      {characters.map((character, index) => (
-        <div key={index}>{character.name}</div>
+    <div className="characters">
+      {data.results.map((character, index) => (
+        <Character character={character} key={index} />
       ))}
+      <div>
+        <button
+          disabled={page === 1}
+          onClick={() => setPage((page) => page - 1)}
+        >
+          Previous
+        </button>
+        <button
+          disabled={isPreviousData || !data.info.next}
+          onClick={() => setPage((page) => page + 1)}
+        >
+          Next
+        </button>
+      </div>
     </div>
   )
 }
