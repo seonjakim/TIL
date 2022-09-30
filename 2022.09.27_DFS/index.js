@@ -78,16 +78,37 @@ const arr = [81, 58, 42, 33, 61]
 const pv = [10, 25, 15, 6, 7]
 const pt = [5, 12, 8, 3, 4]
 function solution(m, pv, pt) {
-  let answer
+  let answer = Number.MIN_SAFE_INTEGER
   const len = pv.length
   function DFS(L, sum, t) {
     if (t > m) return
-    if (L > len) {
+    if (L === len) {
       answer = Math.max(answer, sum)
       return
     }
-    DFS(L + 1, )
+    DFS(L + 1, sum + pv[L], t + pt[L])
+    DFS(L + 1, sum, t)
   }
   DFS(0, 0, 0)
+  return answer
 }
 
+// 중복순열구하기
+function solution(n, m) {
+  const answer = []
+  const tmp = Array.from({length: m}, () => 0)
+  function DFS(L) {
+    if (L === m) {
+      answer.push(tmp.slice())
+      return
+    }
+    for (let i = 1; i <= n; i++) {
+      tmp[L] = i
+      DFS(L + 1)
+    }
+  }
+  DFS(0)
+  return answer
+}
+
+// DFS-Cut edge tech
