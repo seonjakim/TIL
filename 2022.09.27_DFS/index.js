@@ -112,3 +112,51 @@ function solution(n, m) {
 }
 
 // DFS-Cut edge tech
+function solution(n,total) {
+  let answer = Math.MAX_SAFE_INTEGER
+  function DFS(L, sum) {
+    if (sum > total) return
+    if (L >= answer) return
+    if (sum === total) {
+      answer = Math.min(answer, L)
+      return
+    }
+    for (let i = 0; i < n.length; i++) {
+      DFS(L + 1, sum + n[i])
+    }
+    return answer
+  }
+  DFS(0, 0)
+}
+
+// 순열구하기
+function solution(len, arr) {
+  const answer = []
+  const arrLen = arr.length
+  const ch = Array.from({length: arrLen}, () => 0)
+  const tmp = Array.from({length: len}, () => 0)
+  function DFS(L) {
+    if (L === len) {
+      answer.push(tmp.slice())
+    }
+    for (let i = 0; i < arrLen; i++) {
+      if (ch[i] === 0) {
+        ch[i] = 1
+        tmp[L] = arr[i]
+        DFS(L + 1)
+        ch[i] = 0
+      }
+    }
+  }
+  DFS(0)
+  return answer
+}
+
+// 팩토리얼
+function solution(n) {
+  function DFS(n) {
+    if (n === 1) return 1
+    return n * DFS(n - 1)
+  }
+  return DFS(n)
+}
