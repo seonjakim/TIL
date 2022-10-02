@@ -244,3 +244,41 @@ function solution(n, f) {
   DFS(0, 0)
   return answer
 }
+
+// 조합구하기
+function solution(num, com) {
+  const answer = []
+  const tmp = Array.from({length: com}, () => 0)
+  function DFS(L, s) {
+    if (L === com) {
+      answer.push(tmp.slice())
+      return
+    }
+    for (let i = s; i <= num; i++) {
+      tmp[L] = i
+      DFS(L + 1, i + 1)
+    }
+  }
+  DFS(0, 1)
+  return answer
+}
+
+// 수들의 조합
+function checkMultiple(num, com) {
+  return num % com === 0
+}
+function solution(arr, m, com) {
+  const answer = []
+  const tmp = Array.from({length: m}, () => 0)
+  function DFS(L, s, sum) {
+    if (L === m) {
+      checkMultiple(sum, com) && answer.push(tmp.slice())
+      return
+    }
+    for (let i = s; i < arr.length; i++) {
+      tmp[L] = arr[i]
+      DFS(L + 1, i + 1, sum + arr[i])
+    }
+  }
+  DFS(0, 0, 0)
+}
