@@ -59,3 +59,26 @@ function solution() {
   return answer
 }
 
+// 미로탐색
+function solution(board) {
+  let answer = 0
+  let dx = [-1, 0, 1, 0]
+  let dy = [0, 1, 0, -1]
+  const bx = board.length -1, by = board[0].length - 1
+  function DFS(x, y) {
+    if (x === bx && y === by) {
+      answer++
+      return
+    }
+    for (let i = 0; i < dx.length; i++) {
+      const nx = dx[i] + x, ny = dy[i] + y
+      if (nx >= 0 && ny >= 0 && nx <= bx && ny <= by && board[nx][ny] === 0) {
+        board[nx][ny] = 1
+        DFS(nx, ny)
+        board[nx][ny] = 0
+      }
+    }
+  }
+  board[0][0] = 1
+  DFS(0, 0)
+}
