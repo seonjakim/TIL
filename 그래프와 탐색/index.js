@@ -119,3 +119,61 @@ function solution(s, e) {
   }
   return BFS(0, s)
 }
+
+// 섬나라 아일랜드 (DFS)
+function solution(board) {
+  let answer = 0
+  let n = board.length
+  let dx = [-1, -1, 0, 1, 1, 1, 0, -1]
+  let dy = [0, 1, 1, 1, 0, -1, -1, -1]
+  for (let i = 0; i < n; i++) {
+    for (let j = 0; j < n; j++) {
+      if (board[i][j] === 1) {
+        answer++
+        DFS(i, j)
+      }
+    }
+  }
+  function DFS(x, y) {
+    board[x][y] = 0
+    for (let i = 0; i < dx.length; i++) {
+      const nx = x + dx[i], ny = y + dy[i]
+      if (nx >= 0 && nx < n && ny >= 0 && ny < n && board[nx][ny] === 1) {
+        DFS(nx, ny)
+      }
+    }
+  }
+  return answer
+}
+
+// 섬나라 아일랜드 (BFS)
+function solution(board) {
+  let answer = 0
+  let n = board.length
+  let dx = [-1, -1, 0, 1, 1, 1, 0, -1]
+  let dy = [0, 1, 1, 1, 0, -1, -1, -1]
+  let q = []
+  for (let i = 0; i < n; i++) {
+    for (let j = 0; j < n; j++) {
+      if (board[i][j] === 1) {
+        BFS(i, j)
+      }
+    }
+  }
+  
+  function BFS(x, y) {
+    board[x][y] = 0
+    q.push([x, y])
+    answer++
+    while (q.length) {
+      const [cx, cy] = q.shift()
+      for (let k = 0; k < dx; k++) {
+        let nx = cx + dx[k], ny = cy + dy[k]
+        if (nx >= 0 && nx < n && ny >= 0 && ny < n && board[nx][ny] === 1) {
+          board[nx][ny] = 0
+          q.push([nx, ny])
+        }
+      }
+    }
+  }
+}
