@@ -28,6 +28,7 @@ export default function App({ $target }) {
     const suggestion = new Suggestion({
       $target,
       initialState: {
+        cursor: 0,
         items: []
       }
     })
@@ -39,6 +40,7 @@ export default function App({ $target }) {
       }
 
       suggestion.setState({
+        selectedIndex: 0,
         items: this.state.fetchedLanguages
       })
     }
